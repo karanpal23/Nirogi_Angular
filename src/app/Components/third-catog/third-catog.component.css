@@ -1,0 +1,66 @@
+
+
+#prescription{
+  height: 100px;
+}
+
+#signature{
+  font-weight: bold;
+  text-align: right;
+}
+
+#inside-list{
+  margin-left: 30px;
+}
+
+.msg_success{
+  color: darkgreen;
+  font-size: 15px;
+  font-weight: bolder;
+  width: max-content;
+  background-color: lightgreen;
+  
+}
+
+
+/*invalid input style*/
+
+/* input:invalid{
+  border: 2px solid red;
+  animation: shake 0.2s 2;
+  
+}
+@keyframes shake{
+  25%{
+    translate: 6px 0;
+  }
+  50%{
+    translate: -6px 0;
+  }
+  75%{
+    translate: 6px 0;
+  }
+} */
+
+
+/* dropdown */
+
+/* .ng-select .ng-select-container .ng-value-container .ng-value-icon {
+  display: none;
+}
+
+.ng-select .ng-select-container .ng-select-search .ng-clear-wrapper {
+  display: none;
+}
+
+.ng-select .ng-select-container .ng-select-search input {
+  border: none;
+  background-color: #f9f9f9;
+  padding: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
+  border-radius: 4px;
+} */
+
+

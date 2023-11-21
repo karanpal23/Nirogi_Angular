@@ -1,0 +1,624 @@
+<div class="container pt-3" id="first-body" >
+
+    <p class="msg_success m-0"> {{submitSuccessfullmsg}}</p>
+    <form [formGroup]="formFieldsData" class="accordion" id="accordionExample">
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingOne">
+				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Details</button>
+			</h2>
+			<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+				<div class="row">
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">PPP ID</label>
+						<h6 class="mb-1">{{this.detailsData.pppId}}</h6>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Name of Patient</label>
+						<h6 class="mb-1">{{this.detailsData.firstname }} </h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Age &amp; Gender</label>
+						<!-- <h6 class="mb-1">{{this.detailsData.age}} yr {{this.detailsData.gender}}</h6> -->
+						<h6 class="mb-1">{{this.detailsData.dateOfBirth ? (this.detailsData.dateOfBirth | calculateAge):this.detailsData.age}} yr {{this.detailsData.gender}}</h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Mobile No.</label>
+						<h6 class="mb-1">{{this.detailsData.mobileNo}} </h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 mt-1">
+						<label class="text-secondary label-details">Address</label>
+						<h6 class="mb-1">{{this.detailsData.address}} </h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Name of Facility</label>
+						<h6 class="mb-1"> {{loginUserFacilityType}} {{loginUserFacility}}</h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Date</label>
+						<h6 class="mb-1">{{currentDate | date:'dd-MM-yyyy'}}</h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">District</label>
+						<h6 class="mb-1">{{loginUserDistrict}}</h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Name of Facility incharge</label>
+						<h6 class="mb-1">Dr. {{DoctorName}}  </h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1" *ngIf="referenceDivShow==true">
+						<label class="text-secondary label-details">Reference Id</label>
+						<h6 class="mb-1" >{{getrefId.refernceId}} </h6>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingHistory">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#history" aria-expanded="true" aria-controls="history">History/symptoms/complaints</button>
+			</h2>
+			<div id="history" class="accordion-collapse collapse" aria-labelledby="headingHistory" data-bs-parent="#accordionExample">
+				<div class="row align-items-end form-group pt-1">
+					<div class="col-xs-12 col-sm-6 col-lg-5  mb-3">
+						<label class=" label-details">1. Mode of delivery</label>
+						<select class="form-control" id="deliveryType" >
+							<option value="1">NVD</option>
+							<option value="2">LSCS</option>  
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">2. Cry after birth</label>
+						<select class="form-control" id="CryAfterBirth" >
+							<option value="1">Immediate</option>
+							<option value="2">Delayed</option>  
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-5 mb-3">
+						<label class=" label-details">3. Any History of previous Admission in hospital or physical illness</label>
+						<select class="form-control" id="PreviousAdmInHospital"  >
+							<option value="1" >No</option>
+							<option value="2">Yes</option>  
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-3 mb-3">
+						<label class=" label-details">4. Any Significant family History</label>
+						<select class="form-control"  id="FamilyHistory" >
+							<option value="1" >No</option>
+							<option value="2">Yes</option>  
+						</select>
+						<input type="text" matInput *ngIf="familyHistory=='2'" name="" id="" placeholder="If Yes,Enter Details" >
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">5. Immunization Status</label>
+						<select class="form-control" id="Immunization" >
+							<option value="1" >No</option>
+							<option value="2">Yes</option>  
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">6. History of Feeding </label>
+						<select class="form-control" id="FeedingHistory" >
+							<option value="1">Breast Feed</option>
+							<option value="2">Top feed</option>  
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-3 mb-3">
+						<label class=" label-details">7. History of contact with TB pateint</label>
+						<select class="form-control" id="tbContact" >
+							<option value="1" >No</option>
+							<option value="2">Yes</option>  
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">8. History of Deworming</label>
+					   <select class="form-control" id="historyOfDewarming" >
+							<option value="1" >No</option>
+							<option value="2">Yes</option>  
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-lg-12 mb-3">
+						<label class=" label-details">9. Milestones</label><br />             
+						<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> 6 Months to 1 year </label>
+						<div class="row  align-items-end form-group pb-1">                    
+							<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> Sitting without Support</label>                    
+								<select class="form-control" id="sittingWithoutSupport" >
+									<option value="1">Yes</option>
+									<option value="2">No</option>  
+								</select>
+							</div>                   
+							<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+								<label class="label-details"><i class="fa-solid fa-circle-dot"></i>Standing without Support</label>                        
+								<select class="form-control" id="standingWithoutSupport" >
+									<option value="1">Yes</option>
+									<option value="2">No</option>  
+								</select>
+							</div>                   
+							<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i>Standing with Support</label>  
+								<select class="form-control" id="standingWithSupport" >
+									<option value="1">Yes</option>
+									<option value="2">No</option>  
+								</select>
+							</div>
+											   
+							<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i>Pincer grasp</label>
+								<select class="form-control" id="pincerGrasp" >
+									<option value="1">Yes</option>
+									<option value="2">No</option>  
+								</select>
+							</div>                   
+							<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i>Stranger anxiety</label>
+								
+								<select class="form-control" id="strangerAnxiety" >
+									<option value="1">Yes</option>
+									<option value="2">No</option>  
+								</select>
+							</div>
+										   
+							<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i>Bisyllable speech like Ba, Ma, Pa</label>
+								
+								<select class="form-control" id="bisyllableSpeech" >
+									<option value="1">Yes</option>
+									<option value="2">No</option>  
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-6 mb-3">
+						<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> 1 to 2 years</label>
+						<div class="row  align-items-end form-group pb-1"> 
+							<div class="col-xs-12 col-sm-6 col-lg-4">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i>Walking without Support</label>
+						   
+								<select class="form-control" id="walkingWithoutSupport" >
+									<option value="1">Yes</option>
+									<option value="2">No</option>  
+								</select>
+							</div>
+							<div class="col-xs-12 col-sm-6 col-lg-4">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i>Speak 5 to 10 words</label>
+								   
+								<select class="form-control" id="speakFiveToTenSupport" >
+									<option value="1">Yes</option>
+									<option value="2">No</option>  
+								</select>
+							</div>
+							   
+							<div class="col-xs-12 col-sm-6 col-lg-4">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i>Follow simple directions</label>
+									
+								<select class="form-control" id="followSimpleDirection" >
+									<option value="1">Yes</option>
+									<option value="2">No</option>   
+								</select>
+							</div>
+						</div>
+					</div>
+				   
+					<div class="col-xs-12 col-sm-6 col-lg-6 mb-3">
+						<label class="label-details"><i class="fa-solid fa-circle-dot"></i> 2 to 5 years-</label>
+						<div class="row align-items-end form-group pb-1">
+							<div class="col-xs-12 col-sm-6 col-lg-3">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i>Walk up & down stairs with Support</label>
+								<select class="form-control" id="walkStairwithSupport" >
+									<option value="1">Yes</option>
+									<option value="2">No</option>  
+								</select>
+							</div>
+							<div class="col-xs-12 col-sm-6 col-lg-3">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i>Jump with both feet</label>
+						   
+								<select class="form-control" id="jumpWithBothFeet" >
+									<option value="1">Yes</option>
+									<option value="2">No</option>  
+								</select>
+							</div>
+					   
+						   
+							<div class="col-xs-12 col-sm-6 col-lg-3">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i>Scrabbling</label>
+							
+								<select class="form-control" id="scrabbling" >
+									<option value="1">Yes</option>
+									<option value="2">No</option>   
+								</select>
+							</div>
+						
+				
+							<div class="col-xs-12 col-sm-6 col-lg-3">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i>Speak at least 50 words</label>
+							
+								<select class="form-control" id="speakAtleastFiftyWords" >
+									<option value="1">Yes</option>
+									<option value="2">No</option>  
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="pagebreak"></div>
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingPhysicalExam">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#physicalExam" aria-expanded="true" aria-controls="physicalExam">General Physical Examination</button>
+			</h2>
+			<div id="physicalExam" class="accordion-collapse collapse" aria-labelledby="headingPhysicalExam" data-bs-parent="#accordionExample">
+				<div class="row align-items-end form-group pt-1">
+					<div class="col-xs-12 col-sm-6 col-lg-2  mb-3">
+						<label class=" label-details">1. Weight (in kg)<span class="required-field" style="color: red;">*</span></label> 
+						<input class="form-control"  type="number" id="weight" formControlName="weight" placeholder="5-25 (in kg)"  />
+						<div *ngIf="formFieldsData.get('weight').invalid && (formFieldsData.get('weight').dirty || formFieldsData.get('weight').touched)">
+							<div *ngIf="formFieldsData.get('weight').errors.min || formFieldsData.get('weight').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 5-25</div>
+							<div *ngIf="formFieldsData.get('weight').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+						</div>
+					</div>
+       
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">2. Length/Height (in cm)<span class="required-field" style="color: red;">*</span></label>
+						<input class="form-control"  type="number" id="length" formControlName="height" placeholder="50-130 (in cm)"  />
+						<div *ngIf="formFieldsData.get('height').invalid && (formFieldsData.get('height').dirty || formFieldsData.get('height').touched)">
+							<div *ngIf="formFieldsData.get('height').errors.min || formFieldsData.get('height').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 50-130</div>
+							<div *ngIf="formFieldsData.get('height').errors.required" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+						</div>
+					</div>
+			   
+					<div class="col-xs-12 col-sm-6 col-lg-3 mb-3">
+						<label class=" label-details">3. Head circumference (in cm)<span class="required-field" style="color: red;">*</span></label>
+						<input class="form-control"  type="number" formControlName="headCircum" id="headCircum" placeholder="30-60 (in cm)"  />
+						<div *ngIf="formFieldsData.get('headCircum').invalid && (formFieldsData.get('headCircum').dirty || formFieldsData.get('headCircum').touched)">
+							<div *ngIf="formFieldsData.get('headCircum').errors.min || formFieldsData.get('headCircum').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 30-60</div>
+							<div *ngIf="formFieldsData.get('headCircum').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+						</div>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-lg-3 mb-3">
+						<label class=" label-details">4. Mid-arm circumference (in cm)<span class="required-field" style="color: red;">*</span></label>
+						<input class="form-control"  type="number" id="midArm" formControlName="midArmCircum" placeholder="5-20 (in cm)"  />
+						<div *ngIf="formFieldsData.get('midArmCircum').invalid && (formFieldsData.get('midArmCircum').dirty || formFieldsData.get('midArmCircum').touched)">
+							<div *ngIf="formFieldsData.get('midArmCircum').errors.min || formFieldsData.get('midArmCircum').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 5-20</div>
+							<div *ngIf="formFieldsData.get('midArmCircum').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+						</div>
+					</div>
+			   
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">5. Pallor</label>
+						<select class="form-control" id="pallor" required>
+							<option value="1">No</option>
+							<option value="2">Yes</option>  
+						</select>
+					</div>
+      
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">6. Jaundice</label>
+						<select class="form-control" id="jaundice" required>
+							<option value="1" >No</option>
+							<option value="2">Yes</option>  
+						</select>
+					</div>
+       
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">7. Cyanosis</label>
+						<select class="form-control" id="Cyanosis" required>
+							<option value="1" >No</option>
+							<option value="2">Yes</option>  
+						</select>
+					</div>
+       
+					<div class="col-xs-12 col-sm-6 col-lg-3 mb-3">
+						<label class=" label-details">8. Heart rate/ Pulse rate (per min)<span class="required-field" style="color: red;">*</span></label>
+						 <input class="form-control"  type="number" id="heartRate" formControlName="heartRate" placeholder="50-200 (per min)"  />
+						 <div *ngIf="formFieldsData.get('heartRate').invalid && (formFieldsData.get('heartRate').dirty || formFieldsData.get('heartRate').touched)">
+							<div *ngIf="formFieldsData.get('heartRate').errors.min || formFieldsData.get('heartRate').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 50-200</div>
+							<div *ngIf="formFieldsData.get('heartRate').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+						</div>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-lg-3 mb-3">
+						<label class=" label-details">9. Respiratory rate (per min)<span class="required-field" style="color: red;">*</span></label>
+						 <input class="form-control"  type="number" id="respiratoryRate" formControlName="respiratoryRate" placeholder="25-30 (per min)" />
+						 <div *ngIf="formFieldsData.get('respiratoryRate').invalid && (formFieldsData.get('respiratoryRate').dirty || formFieldsData.get('respiratoryRate').touched)">
+							<div *ngIf="formFieldsData.get('respiratoryRate').errors.min || formFieldsData.get('respiratoryRate').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 25-30</div>
+							<div *ngIf="formFieldsData.get('respiratoryRate').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+						</div>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">10. Pedal oedema</label>
+						<select class="form-control" id="pedalOedema" required>
+							<option value="1" >No</option>
+							<option value="2">Yes</option>  
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">11. Oxygen Saturation (&#62; 93 per)<span class="required-field" style="color: red;">*</span></label>
+						<input class="form-control"  type="number" formControlName="oxygenSaturation" id="oxygenSaturation" placeholder="70% - 100% " />
+						<div *ngIf="formFieldsData.get('oxygenSaturation').invalid && (formFieldsData.get('oxygenSaturation').dirty || formFieldsData.get('oxygenSaturation').touched)">
+							<div *ngIf="formFieldsData.get('oxygenSaturation').errors.min || formFieldsData.get('oxygenSaturation').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 70%-100%</div>
+							<div *ngIf="formFieldsData.get('oxygenSaturation').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+						</div>
+					</div>
+			   
+      
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">12. Congenital anomalies </label>
+						<select class="form-control" id="CongenitalAnomalies" required>
+							<option value="1">None</option>
+							<option value="2">Cleft lip/palate </option>
+							<option value="3">Clubfoot </option>  
+							<option value="4">Ear anomaly </option>
+							<option value="5">Digital anomaly</option>
+							<option value="6">Spine anomaly</option>
+							<option value="7">Others</option>
+						</select>
+					</div>
+			   
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">13. Anterior fontanelle </label> 
+						<select class="form-control"  name="" id="AnteriorFontanelle" required>
+							<option value="1">Open
+							</option>
+							<option value="2">Closed</option>
+						</select> 
+						<!---<select class="form-control" *ngIf="anteriorOption=='1'" required>
+							<option value="3">Depressed</option>
+							<option value="4">Just depressed</option>
+							<option value="5">Bulging</option>
+						</select>-->
+						
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">14. Hair texture</label>
+						<select class="form-control" id="hairTexture" required>
+							<option value="1">Normal</option>
+							<option value="2">Frizzy</option>
+							<option value="3">De-pigmented</option>
+						</select>
+					</div>
+      
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">15. Skin texture</label>
+						<select class="form-control" id="skinTexture" required>
+							<option value="1">Smooth</option>
+							<option value="2">Rough</option>
+						</select>
+					</div>
+			   
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">16. Skin turgor </label>
+						<select class="form-control" id="skinTurgor" required>
+							<option value="1">Normal</option>
+							<option value="2">Decreased</option>
+						</select>
+					</div>
+			   
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">17. Any Skin Lesions</label>
+						<select class="form-control" id="SkinLesions" required>
+							<option value="1">No</option>
+							<option value="2">Yes</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingSysmetic">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#systemicExam" aria-expanded="true" aria-controls="physicalExam">Systemic Examination</button>
+			</h2>
+			<div id="systemicExam" class="accordion-collapse collapse" aria-labelledby="headingSysmetic" data-bs-parent="#accordionExample">
+				<div class="row align-items-end form-group pt-1">
+					<div class="col-xs-12 col-sm-6 col-lg-2  mb-3">
+						<label class=" label-details">1. Chest </label>
+						<select class="form-control" id="chest" required>
+							<option value="1">Normal</option>
+							<option value="2">Wheeze</option>
+							<option value="3">Abnormal Sound</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">2. CVS</label>
+						<select class="form-control" id="cvs" required>
+							<option value="1">Normal</option>
+							<option value="2">Abnormal Sound</option>
+						</select>
+					</div>
+
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">3. Per abdomen</label>
+						<select class="form-control" id="perAbdomen" required>
+							<option value="1">Normal</option>
+							<option value="2">No abnormality</option>
+							<option value="3">Any distension</option>
+							<option value="4">Organomegaly</option>
+							<option value="5">Dilated veins</option>
+							<option value="6">Umbilicus</option>
+						</select>
+					</div>
+       
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">4. CNS </label>
+						<select class="form-control" id="cns" required>
+							<option value="1">Normal</option>
+							<option value="2">Conscious</option>
+							<option value="3">Altered sensorium</option>
+							<option value="4">Abnormal movements</option>
+						</select>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">5. Hearing</label>
+						<select class="form-control" id="hearing" required>
+							<option value="1">Normal</option>
+							<option value="2">Decreased</option>
+						</select>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-lg-6 mb-3">
+						<label class=" label-details">6. Eye Refraction</label>
+						<div class="row  align-items-end form-group pt-1">
+							<div class="col-xs-12 col-sm-6 col-lg-4">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> Right eye<span class="required-field" style="color: red;">*</span></label>
+								<input  type="text" formControlName="rightEye"  class="form-control"  />
+								<div *ngIf="formFieldsData.get('rightEye').invalid && (formFieldsData.get('rightEye').dirty || formFieldsData.get('rightEye').touched)">
+									<div *ngIf="formFieldsData.get('rightEye').errors.min || formFieldsData.get('rightEye').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 70%-100%</div>
+									<div *ngIf="formFieldsData.get('rightEye').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+								</div>
+							</div>
+					
+							<div class="col-xs-12 col-sm-6 col-lg-4">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> Left eye<span class="required-field" style="color: red;">*</span></label>
+								<input  type="text" formControlName="leftEye"  class="form-control"  />
+								<div *ngIf="formFieldsData.get('leftEye').invalid && (formFieldsData.get('leftEye').dirty || formFieldsData.get('leftEye').touched)">
+									<div *ngIf="formFieldsData.get('leftEye').errors.min || formFieldsData.get('leftEye').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 70%-100%</div>
+									<div *ngIf="formFieldsData.get('leftEye').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+								</div>
+							</div>
+					
+							<div class="col-xs-12 col-sm-6 col-lg-4">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> Colour blindness</label>
+								<select class="form-control" id="colorVision" required>
+									<option value="1">No</option>
+									<option value="2">Yes</option>
+								</select>
+							</div>
+						</div>    
+					</div>
+					
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">7. Dental examination</label>
+						<select class="form-control" id="dentalExamination" required>
+							<option value="1">Normal</option>
+							<option value="2">Any abnormality</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingMandat">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mandatoryInvest" aria-expanded="true" aria-controls="physicalExam">Mandatory investigations</button>
+			</h2>
+			<div id="mandatoryInvest" class="accordion-collapse collapse" aria-labelledby="headingMandat" data-bs-parent="#accordionExample">
+		
+				<div class="row align-items-end form-group pt-1">
+					<div class="col-xs-12 col-sm-6 col-lg-3  mb-3">
+						<label class=" label-details">1. Hb (in g/dl)</label>
+						<input  name="hb" placeholder="9 to 14 g/dL" formControlName="hB"  class="form-control"    />
+						<div *ngIf="formFieldsData.get('hB').invalid && (formFieldsData.get('hB').dirty || formFieldsData.get('hB').touched)">
+							<div *ngIf="formFieldsData.get('hB').errors.min || formFieldsData.get('hB').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 9-14</div>
+							<div *ngIf="formFieldsData.get('hB').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+						</div>
+					</div>
+			   
+					
+					<div class="col-xs-12 col-sm-6 col-lg-4 mb-3">
+						<label class=" label-details">2. Relevant investigation if advised by specialist</label>
+						<input  name="relevantInvestigation" formControlName="relevantInvestigation" class="form-control"  />
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingDiagnosis">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#diagnosisSec" aria-expanded="true" aria-controls="physicalExam">Diagnosis</button>
+			</h2>
+			<div id="diagnosisSec" class="accordion-collapse collapse" aria-labelledby="headingDiagnosis" data-bs-parent="#accordionExample"> 
+				<div class="row  align-items-center form-group pt-3 pb-3">
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<label style="font-weight: bold;">Diagnosis :- 
+							<!-- <span class="required-field" style="color: red;">*</span> -->
+						</label>
+			
+						<ng-multiselect-dropdown [placeholder]="'Select an option'" [data]="dropdownList" [settings]="dropdownSettings"
+							(onSelect)="onItemSelect($event)" 
+							(onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"  [ngClass]='setClass()'
+							name='countrySelect '>
+						</ng-multiselect-dropdown>
+  
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<div class="form-check d-flex align-items-center">
+							<input class="form-check-input" type="checkbox" value="" (change)="selectedBox($event)" id="alreadyKnown">
+							<label class="form-check-label" for="alreadyKnown">Already Known</label>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-lg-12 mt-2" id="box" *ngIf="selectedDiseases.includes('Others')" >
+						<textarea id="prescription" class="form-control" formControlName="otherDisease"  placeholder="Write for diagnosis"></textarea>						
+					</div>
+				</div>
+				<div class="row  align-items-center form-group pt-3 pb-3">
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<label style="font-weight: bold;">National Health Programs :- 
+							<!-- <span class="required-field" style="color: red;"> *</span>  -->
+						</label>
+						
+						<select id="natHProgSelectedValue" (change)="getNatHelProg($event)">
+							<option *ngFor="let n of NationalHealthProgramsList" [value]="n.nationalHealthProgramNames">{{n.nationalHealthProgramNames}}</option>
+						  </select>
+						  
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<label style="font-weight: bold;">Reason For Refer :- 
+							<!-- <span class="required-field" style="color: red;"> *</span>  -->
+						</label>
+						<select id="reasonForReferValue">
+							<option value="">{{this.natHealthProgSelectedValue}}</option>
+							<!-- <option value="">To a higher centre: </option> -->
+							<optgroup label="To a higher centre:"> 
+								<option value="">
+									For detailed evaluation
+								</option>
+								<option value="">For treatment</option>
+							</optgroup>
+							<option value="">Specialist consultation</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingPrescription">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#prescriptionSec" aria-expanded="true" aria-controls="physicalExam">Prescription (if any)</button>
+			</h2>
+			<div id="prescriptionSec" class="accordion-collapse collapse" aria-labelledby="headingPrescription" data-bs-parent="#accordionExample"> 
+				<div class="row  align-items-center form-group pt-3 pb-3">
+					<div class="col-xs-12 col-sm-12 col-lg-12">
+						<textarea id="prescription" formControlName="prescription" class="form-control"></textarea>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+    
+    <div class="row mt-3 ">
+        <p id="signature" >Doctor's Signature: _______________</p>
+    </div>
+
+    <!-- Category Card Ends -->
+    
+    
+    <div class="card bg-dark row rounded-0 footer-button-area">
+        <div class="card-body col-xs-12 pt-3 pb-3 text-end">
+            <button class="btn btn-primary float-start form-submit-print " [disabled]="!printButton" onclick="window.print()"><i class="fa-solid fa-print"></i> Print</button>
+            <button class="btn btn-danger form-submit-button mx-2" (click)="onCancel()"><i class="fa fa-arrow-left"></i> Back</button>
+            <button class="btn btn-success form-submit-button" [disabled]="formFieldsData.invalid" (click)="onSave()" ><i class="fa-solid fa-floppy-disk"></i> Save</button>
+        </div>
+    </div>
+    
+</div>

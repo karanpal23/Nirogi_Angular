@@ -1,0 +1,12 @@
+<div class="custom-dialog 22">
+	<h2 mat-dialog-title>Pending Reports</h2>
+	<mat-dialog-content>
+		<p>
+            There are currently {{ PendingReportsCount }} pending lab reports!
+		</p>
+	</mat-dialog-content>
+	<mat-dialog-actions align="end">
+		<button mat-raised-button color="warn" (click)="refreshCount()">Refresh</button>
+		<button mat-button mat-raised-button [mat-dialog-close]="false">ok</button>
+	</mat-dialog-actions>
+</div>

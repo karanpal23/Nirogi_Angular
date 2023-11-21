@@ -1,0 +1,11 @@
+@import url("C:\Users\Gopesh\OneDrive\Documents\mmssy-Angular-app\src\spinnerStyle.css");
+#reportText:hover{
+text-decoration: underline;
+color: whitesmoke;
+background-color: slateblue ;
+font-weight: bold;
+}
+
+#reportText{
+color: slateblue;
+}

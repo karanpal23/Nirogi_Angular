@@ -1,0 +1,373 @@
+<div class="container pt-3" id="first-body" >
+    
+	<div class="accordion" id="accordionExample">
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingOne">
+				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Details</button>
+			</h2>
+			<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+				<div class="row" *ngFor="let d of patientRecord.Patient">
+				
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">PPP ID</label>
+						<h6 class="mb-1"> {{d.data.pppId}} </h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Name of Patient</label>
+						<h6 class="mb-1"> {{d.data.firstname}} {{d.data.lastname}}</h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Age &amp; Gender</label>
+						<h6 class="mb-1">{{d.data.age}} {{d.data.gender}}</h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Mobile</label>
+						<h6 class="mb-1">{{d.data.mobileNo}} </h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 mt-1">
+						<label class="text-secondary label-details">Address</label>
+						<h6 class="mb-1"> {{d.data.address}} </h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+                        <div *ngFor="let data of patientRecord.Data">
+                            <div *ngIf="data.title === 'General Exam'">
+                                <label class="text-secondary label-details">Name of Facility</label>
+                                <h6 class="mb-1">{{data.data.facility}}</h6>
+                            </div>
+                        </div>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+                        <div *ngFor="let data of patientRecord.Data">
+                            <div *ngIf="data.title === 'General Exam'">
+                                <label class="text-secondary label-details">Date</label>
+                                <h6 class="mb-1">{{data.data.createdDate | date:'medium'}}</h6>
+                            </div>
+                        </div>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+                        <div *ngFor="let data of patientRecord.Data">
+                            <div *ngIf="data.title === 'General Exam'">
+                                <label class="text-secondary label-details">District</label>
+                                <h6 class="mb-1">{{data.data.district}}</h6>
+                            </div>
+                        </div>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+                        <div *ngFor="let data of patientRecord.Data">
+                            <div *ngIf="data.title === 'General Exam'">
+                                <label class="text-secondary label-details">Name of Facility Doctor</label>
+                                <h6 class="mb-1">Dr. {{data.data.createdBy}} </h6>
+                            </div>
+                        </div>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+                        <div *ngFor="let data of patientRecord.Data">
+                            <div *ngIf="data.title === 'General Exam'">
+                                <label class="text-secondary label-details">Reference Id</label>
+                                <h6 class="mb-1" >{{data.data.referenceId}} </h6>
+                            </div>
+                        </div>
+					</div>							   
+				</div>						   
+			</div>
+		</div>
+
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingHistory">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#history" aria-expanded="true" aria-controls="history">History/symptoms/complaints</button>
+			</h2>
+			<div id="history" class="accordion-collapse collapse" aria-labelledby="headingHistory" data-bs-parent="#accordionExample">
+				<div *ngFor="let historyData of patientRecord.Data">  
+                    <div class="row  align-items-center form-group pt-3 pb-3" *ngIf="historyData.title === 'History'">
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">1. Mode of delivery</label>
+						<select class="form-control" id="DeliveryType" disabled>
+							<option disabled value="DeliveryType">Select Delivery Type:-</option>
+							<option [value]="historyData.deliveryType" selected>{{ historyData.data.deliveryType }}</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">2. Cry after birth</label>
+						<select class="form-control" id="CryAfterBirth" disabled>
+							<option value="1">{{ historyData.data.cryAfterBirth }}</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">3. Any History of previous Admission in hospital or physical illness</label>
+						<select class="form-control" id="AnyHistoryOfPreviousAdmIllness" disabled>
+							<option value="1">{{ historyData.data.histroyAdmIllness }}</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">4. Any Significant family History</label>
+						<select class="form-control" id="FamilyHistory" disabled>
+							<option value="1">{{ historyData.data.historyFamily }}</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">5. Immunization Status</label>
+						<select class="form-control" id="Immunization" disabled>
+							<option value="1">{{ historyData.data.immunStatus }}</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">6. History of Feeding </label>
+						<select class="form-control" id="FeedingHistory" disabled>
+							<option value="1">{{ historyData.data.historyFeeding }}</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">7. History of contact with TB patient</label>
+						<select class="form-control" id="tbContact" disabled>
+							<option value="1">{{ historyData.data.contactWithTB }}</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-6 mb-3">
+						<label class="label-details">8. Milestones</label>
+						<div *ngFor="let milestonesData of patientRecord.Data">  
+                            <div class="row  align-items-center form-group pt-3 pb-3" *ngIf="milestonesData.title === 'Milestones'">
+							<div class="col-xs-12 col-sm-4 col-lg-4">
+								<label class="label-details"><span class="milestone-list-icon"><i class="fa-solid fa-circle-dot"></i></span>Neck Holding</label>
+								<select class="form-control" id="neckHolding" disabled>
+									<option value="1">{{ milestonesData.data.neckHolding }}</option>
+								</select>
+							</div>
+							<div class="col-xs-12 col-sm-4 col-lg-4">
+								<label class="label-details"><span class="milestone-list-icon"><i class="fa-solid fa-circle-dot"></i></span>Social smile</label>
+								<select class="form-control" id="SocialSmile" disabled>
+									<option value="1">{{ milestonesData.data.socialSmile }}</option>
+								</select>
+							</div>
+							<div class="col-xs-12 col-sm-4 col-lg-4">
+								<label class="label-details"><span class="milestone-list-icon"><i class="fa-solid fa-circle-dot"></i></span>Sitting with support</label>
+								<select class="form-control" id="sittingWithSupport" disabled>
+									<option value="1">{{ milestonesData.data.sittingWithSupport }}</option>
+								</select>
+							</div>
+						</div>
+                        </div>
+						   
+					</div>
+                    </div>
+				</div>
+			</div>
+
+		</div>
+		
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingPhysicalExam">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#physicalExam" aria-expanded="true" aria-controls="physicalExam">General Physical Examination</button>
+			</h2>
+			<div id="physicalExam" class="accordion-collapse collapse" aria-labelledby="headingPhysicalExam" data-bs-parent="#accordionExample">
+				<div *ngFor="let generalData of patientRecord.Data">    
+                    <div class="row align-items-end form-group pt-1" *ngIf="generalData.title === 'General Exam'" >
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">1. Weight (in kg)</label>
+						<input name="weight" class="form-control" matInput disabled [value]="generalData.data.weight" />
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">2. Length (in cm)</label>
+						<input placeholder="in cm" name="height" class="form-control" disabled [value]="generalData.data.height" />
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">3. Head circumference (in cm)</label>
+						<input name="headCircum" matInput class="form-control" disabled [value]="generalData.data.headCircum" />
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">4. Pallor</label>
+						<select class="form-control" id="pallor" disabled>
+							<option value="1">{{ generalData.data.pallor }}</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">5. Jaundice</label>
+						<select class="form-control" id="Jaundice" disabled>
+							<option value="1">{{ generalData.data.jaundice }}</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">6. Cyanosis</label>
+						<select class="form-control" id="Cyanosis" disabled>
+							<option value="1">{{ generalData.data.cyanosis }}</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">7. Heart rate (per minute)</label>
+						<input name="heartRate" matInput class="form-control" disabled [value]="generalData.data.heartRate" />
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class="label-details">8. Respiratory rate (per minute)</label>
+						<input name="respiratoryRate" matInput class="form-control" disabled [value]="generalData.data.respiratoryRate" />
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">9. Capillary Refill Time (&#60; 3 sec)</label>
+						<input   name="cappillaryRefillTime" [value]="generalData.data.cappillaryRefillTime" disabled class="form-control" />
+					</div>
+			
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">10. Oxygen Saturation (&#62; 93 &percnt;)</label>
+						<input  name="oxygenSaturation " [value]="generalData.data.oxygenSaturation" disabled class="form-control"  />
+					</div>
+		   
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">11. Congenital anomalies</label>
+						<select class="form-control" id="CongenitalAnomalies" disabled>
+							<option value="1">{{generalData.data.congenitalAnomalies}}</option>
+							
+						</select>  
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">12. Anterior fontanelle </label>
+				
+					<select class="form-control" id="AnteriorFontanelle" disabled>
+						<option value="1">{{generalData.data.anteriorFontanelle}}</option>
+					</select>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+					<label class=" label-details">13. Any Skin Lesions</label>
+			   
+					<select class="form-control" id="SkinLesions" disabled>
+						<option value="1">{{generalData.data.skinLesions}}</option>
+					</select>
+				</div>
+                </div>
+			</div>
+			</div>
+		</div>
+		
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingSysmetic">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#systemicExam" aria-expanded="true" aria-controls="physicalExam">Systemic Examination</button>
+			</h2>
+			<div id="systemicExam" class="accordion-collapse collapse" aria-labelledby="headingSysmetic" data-bs-parent="#accordionExample">
+				<div *ngFor="let s of patientRecord.Data">   
+                    <div class="row  align-items-end form-group pt-1"   *ngIf="s.title === 'Systemic Exam'">
+					<div class="col-xs-12 col-sm-6 col-lg-2  mb-3">
+						<label class=" label-details">1. Chest </label>
+						<select class="form-control" id="chest" disabled>
+							<option value="1">{{s.data.chest}}</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">2. CVS</label>
+						<select class="form-control" id="cvs" disabled>
+							<option value="1">{{s.data.cvs}}</option>
+						</select>
+					</div>
+
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">3. Per abdomen</label>
+						<select class="form-control" id="perAbdomen" disabled>
+							<option value="1">{{s.data.perAbdomen}}</option>
+						</select>
+					</div>
+       
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">4. CNS </label>
+						<select class="form-control" id="cns" disabled>
+							<option value="1">{{s.data.cns}}</option>
+						</select>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-3">
+						<label class=" label-details">5. Hearing</label>
+						<select class="form-control" id="hearing" disabled>
+							<option value="1">{{s.data.hearing}}</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-4 mb-3">
+						<label class="label-details">6. Eye Congenital cataract</label>
+						<select class="form-control" id="EyeCongenital" disabled>
+							<option value="1">{{s.data.eyeCongenitalCataract}}</option>
+						</select>
+					</div>  
+					<div class="col-xs-12 col-sm-6 col-lg-4 mb-3">
+						<label class="label-details"><i class="fa-solid fa-circle-dot"></i> Movement of eye ball with light</label>
+						<select class="form-control" id="MovementOfEye" disabled>
+							<option value="1">{{s.data.movementOfEyeWithLight}}</option>
+						</select>
+					</div>    
+				</div>
+                </div>
+			</div>
+		</div>
+		
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingMandat">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mandatoryInvest" aria-expanded="true" aria-controls="physicalExam">Mandatory investigations</button>
+			</h2>
+			<div id="mandatoryInvest" class="accordion-collapse collapse" aria-labelledby="headingMandat" data-bs-parent="#accordionExample">  
+				<div  *ngFor="let mandate of patientRecord.Data">
+                    <div class="row  align-items-end form-group pt-1 data-section" *ngIf="mandate.title === 'Mandatory Investigation'" >
+						<div class="col-xs-12 col-sm-6 col-lg-3  mb-3">
+							<label class=" label-details">1. Hb (in g/dl)</label>
+							<input  name="hb"   value={{mandate.data.hb}}  class="form-control" id="HbValue" matInput />
+						</div>
+						<div class="col-xs-12 col-sm-6 col-lg-4 mb-3">
+							<label class=" label-details">2. Relevant investigation if advised by specialist</label>
+							<input type="text" class="form-control" value={{mandate.data.relevantInvestigation}} name=""  id="releventInvestigation">
+						</div>
+						
+					</div>
+                </div>
+			</div>
+		</div>
+        <div class="pagebreak"></div>
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingDiagnosis">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#diagnosisSec" aria-expanded="true" aria-controls="physicalExam">Diagnosis</button>
+			</h2>
+			<div id="diagnosisSec" class="accordion-collapse collapse" aria-labelledby="headingDiagnosis" data-bs-parent="#accordionExample"> 
+				<div *ngFor="let d of patientRecord.Data">  
+                    <div class="row  align-items-center form-group pt-3 pb-3" *ngIf="d.title === 'Diagnosis'">
+					<div class="row align-items-center form-group pt-3 pb-3">
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<label>Diagnosis</label>
+							<input type="text" [value]="d.data.diagnosed" disabled>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<label>Already Known</label>
+							<input matInput [value]="d.data.alreadyKnown" disabled>
+						</div>
+				
+					</div>
+				</div>
+                </div>
+			</div>
+		</div>
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingPrescription">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#prescriptionSec" aria-expanded="true" aria-controls="physicalExam">Prescription (if any)</button>
+			</h2>
+			<div id="prescriptionSec" class="accordion-collapse collapse" aria-labelledby="headingPrescription" data-bs-parent="#accordionExample"> 
+				<div class="row  align-items-center form-group pt-3 pb-3">
+					<div *ngFor="let d of patientRecord.Data">  
+                        <div class="row  align-items-center form-group pt-3 pb-3" *ngIf="d.title === 'Diagnosis'">
+						<textarea id="prescription" [value]="d.data.prescription" class="form-control"></textarea>
+                        </div>
+
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+		<div class="row mt-3">
+			<p id="signature">Doctor's Signature: _______________</p>
+		</div>
+
+    <!-- Category Card Ends -->
+    
+    
+    <div class="card bg-dark row rounded-0 footer-button-area">
+        <div class="card-body col-xs-12 pt-3 pb-3 text-end">
+            <button class="btn btn-primary float-start form-submit-print "  onclick="window.print()"><i class="fa-solid fa-print"></i> Print</button>
+			<button class="btn btn-danger  form-submit-button mx-2" (click)="onCancel()"><i class="fa fa-arrow-left"></i> Back</button>
+        </div>
+    </div>
+    
+    
+</div>
+

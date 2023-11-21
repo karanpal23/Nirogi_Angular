@@ -1,0 +1,585 @@
+<div class="container pt-3" id="first-body" >
+    
+    <p class="msg_success m-0"> {{submitSuccessfullmsg}}</p>
+	<form [formGroup]="formFieldsData" class="accordion" id="accordionExample">
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingOne">
+				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Details</button>
+			</h2>
+			<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+				<div class="row">
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">PPP ID</label>
+						<h6 class="mb-1">{{this.detailsData.pppId}}</h6>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Name of Patient</label>
+						<h6 class="mb-1">{{this.detailsData.firstname }} </h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Age &amp; Gender</label>
+						<!-- <h6 class="mb-1">{{this.detailsData.age}} yr {{this.detailsData.gender}}</h6> -->
+						<h6 class="mb-1">{{this.detailsData.dateOfBirth ? (this.detailsData.dateOfBirth | calculateAge):this.detailsData.age}} yr {{this.detailsData.gender}}</h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Mobile No.</label>
+						<h6 class="mb-1">{{this.detailsData.mobileNo}} </h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 mt-1">
+						<label class="text-secondary label-details">Address</label>
+						<h6 class="mb-1">{{this.detailsData.address}} </h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Name of Facility</label>
+						<h6 class="mb-1"> {{loginUserFacilityType}} {{loginUserFacility}}</h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Date</label>
+						<h6 class="mb-1">{{currentDate | date:'dd-MM-yyyy'}}</h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">District</label>
+						<h6 class="mb-1">{{loginUserDistrict}}</h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1">
+						<label class="text-secondary label-details">Name of Facility incharge</label>
+						<h6 class="mb-1">Dr. {{DoctorName}}  </h6>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-2 mt-1" *ngIf="referenceDivShow==true">
+						<label class="text-secondary label-details">Reference Id</label>
+						<h6 class="mb-1" >{{getrefId.refernceId}} </h6>
+					</div>
+				</div>						   
+			</div>
+		</div>
+
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingHistory">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#history" aria-expanded="true" aria-controls="history">General Physical Examination</button>
+			</h2>
+			<div id="history" class="accordion-collapse collapse" aria-labelledby="headingHistory" data-bs-parent="#accordionExample">
+				<div class="row align-items-end form-group pt-1">
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">1. Weight (in kg) <span class="required-field" style="color: red;">*</span></label>           
+						<input class="form-control" formControlName="weight"  type="number" id="weight" placeholder="5 - 120 in KG" (keyup)="calculateBmi()" />
+						<div *ngIf="formFieldsData.get('weight').invalid && (formFieldsData.get('weight').dirty || formFieldsData.get('weight').touched)">
+							<div *ngIf="formFieldsData.get('weight').errors.min || formFieldsData.get('weight').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 5-120</div>
+							<div *ngIf="formFieldsData.get('weight').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+						</div>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">2. Height (in cm)<span class="required-field" style="color: red;">*</span></label>
+						<input class="form-control"  type="number" formControlName="height" id="length" placeholder="90 - 215" (keyup)="calculateBmi()"/>
+						<div *ngIf="formFieldsData.get('height').invalid && (formFieldsData.get('height').dirty || formFieldsData.get('height').touched)">
+							<div *ngIf="formFieldsData.get('height').errors.min || formFieldsData.get('height').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 90-215</div>
+							<div *ngIf="formFieldsData.get('height').errors.required" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+						</div>
+					</div>
+			  
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">3. BMI (kg/ &#13217; )</label>
+						<input class="form-control"   formControlName="bmi" id="bmi" placeholder="12 - 40" value={{calculatedBmi}} matInput />
+					</div>
+			   
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">4. Pulse (per min)<span class="required-field" style="color: red;">*</span></label>
+				  
+						<input class="form-control"  type="number" formControlName="pulseRate" id="pulseRate" placeholder="30 - 250 " />
+						<div *ngIf="formFieldsData.get('pulseRate').invalid && (formFieldsData.get('pulseRate').dirty || formFieldsData.get('pulseRate').touched)">
+							<div *ngIf="formFieldsData.get('pulseRate').errors.min || formFieldsData.get('pulseRate').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 30-250</div>
+							<div *ngIf="formFieldsData.get('pulseRate').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+						</div>
+					</div>
+			   
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">5. Respiratory rate (per min)<span class="required-field" style="color: red;">*</span></label>
+						<input class="form-control"  type="number" formControlName="respiratoryRate" id="respiratoryRate" placeholder="5 - 30 "  />
+						<div *ngIf="formFieldsData.get('respiratoryRate').invalid && (formFieldsData.get('respiratoryRate').dirty || formFieldsData.get('respiratoryRate').touched)">
+							<div *ngIf="formFieldsData.get('respiratoryRate').errors.min || formFieldsData.get('respiratoryRate').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 5-30</div>
+							<div *ngIf="formFieldsData.get('respiratoryRate').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+						</div>
+					</div>
+			   
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">6. BP (mmHg)<span class="required-field" style="color: red;">*</span></label>
+						<input class="form-control" formControlName="bloodPressure" type="text" id="bp" placeholder="40 - 300 " />
+						<div *ngIf="formFieldsData.get('bloodPressure').invalid && (formFieldsData.get('bloodPressure').dirty || formFieldsData.get('bloodPressure').touched)">
+							<!-- <div *ngIf="formFieldsData.get('bloodPressure').errors.min || formFieldsData.get('bloodPressure').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be like (34/33)</div> -->
+							<div *ngIf="formFieldsData.get('bloodPressure').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be like (34/33)</div>
+						</div>
+					</div>
+				
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingPhysicalExam">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#physicalExam" aria-expanded="true" aria-controls="physicalExam">Symptoms/complaints</button>
+			</h2>
+			<div id="physicalExam" class="accordion-collapse collapse" aria-labelledby="headingPhysicalExam" data-bs-parent="#accordionExample">
+				<div class="row align-items-end form-group pt-1">
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">1. Pallor</label>
+						<select class="form-control" id="pallor" required>
+							<option value="1">No</option>
+							<option value="2">Yes</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">2. Jaundice/Cyanosis</label>
+						<select class="form-control" id="jaundice/Cyanosis" required>
+							<option value="1">No</option>
+							<option value="2">Yes</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">3. Clubbing</label>
+						<select class="form-control" id="clubbing" required>
+							<option value="1">No</option>
+							<option value="2">Yes</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">4. Lymphadenopathy</label>
+						<select class="form-control" id="lymphadenopathy" required>
+							<option value="1">No</option>
+							<option value="2">Yes</option>
+						</select>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">5. Pedal oedema</label>
+						<select class="form-control" id="pedalOedema" required>
+							<option value="1">No</option>
+							<option value="2">Yes</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingSysmetic">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#systemicExam" aria-expanded="true" aria-controls="physicalExam">Systematic Investigation</button>
+			</h2>
+			<div id="systemicExam" class="accordion-collapse collapse" aria-labelledby="headingSysmetic" data-bs-parent="#accordionExample">
+				<div class="row  align-items-end form-group pt-3">
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">1. Chest </label>
+						<select class="form-control" id="chest" required>
+							<option value="1">Normal</option>
+							<option value="2">Wheeze</option>
+							<option value="3">Abnormal sounds</option>
+						</select>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">2. CVS </label>
+						<select class="form-control" id="cvs" required>
+							<option value="1">Normal</option>
+							<option value="2">Abnormal Sound</option>
+							<option value="3">Palpitations</option>
+							<option value="4">Murmur</option>
+						</select>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">3. Per abdomen</label>
+						<select class="form-control" id="perAbdomen" required>
+							<option value="1">Normal</option>
+							<option value="2">Any distension</option>
+							<option value="3">Organomegaly</option>
+							<option value="4">Dilated veins</option>
+						</select>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-lg-3 mb-2">
+						<label class=" label-details">4. CNS </label>
+						<select class="form-control" id="cns" required>
+							<option value="1">Normal</option>
+							<option value="2">Conscious</option>
+							<option value="3">Altered sensorium</option>
+							<option value="4">Abnormal movements</option>
+						</select>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-lg-3 mb-2">
+						<label class=" label-details">5. Hearing</label>
+						<select class="form-control" id="hearing" required>
+							<option value="1">Normal</option>
+							<option value="2">Decreased</option>
+						</select>
+					</div>
+				
+					<div class="col-xs-12 col-sm-6 col-lg-6 mb-2">
+						<label class=" label-details">6. Eye - Refraction</label>
+						<div class="row  align-items-end form-group">
+							<div class="col-xs-12 col-sm-6 col-lg-4">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> Right eye<span class="required-field" style="color: red;">*</span></label>
+							
+								<input type="text" class="form-control" formControlName="rightEye" name="" id=""  />
+								<div *ngIf="formFieldsData.get('rightEye').invalid && (formFieldsData.get('rightEye').dirty || formFieldsData.get('rightEye').touched)">
+									<!-- <div *ngIf="formFieldsData.get('rightEye').errors.min || formFieldsData.get('rightEye').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 70%-100%</div> -->
+									<div *ngIf="formFieldsData.get('rightEye').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6 col-lg-4 ">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> Left eye<span class="required-field" style="color: red;">*</span></label>
+								<input type="text" class="form-control" formControlName="leftEye" name="" id=""  />
+								<div *ngIf="formFieldsData.get('leftEye').invalid && (formFieldsData.get('leftEye').dirty || formFieldsData.get('leftEye').touched)">
+									<!-- <div *ngIf="formFieldsData.get('leftEye').errors.min || formFieldsData.get('leftEye').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 70%-100%</div> -->
+									<div *ngIf="formFieldsData.get('leftEye').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+								</div>
+							</div>
+						
+							<div class="col-xs-12 col-sm-6 col-lg-4">
+								<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> Colour blindness</label>
+							
+								<select class="form-control" id="colorVision" required>
+									<option value="1">No</option>
+									<option value="2">Yes</option>
+								</select>
+							</div>
+						</div>
+					</div>  
+				
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">7. Dental examination</label>
+				   
+						<select class="form-control" id="dentalExamination" required>
+							<option value="1">Normal</option>
+							<option value="2">Caries</option>
+							<option value="3">Loose denture</option>
+							<option value="4">Malocclusion</option>
+						</select>
+					</div>
+			   
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">8. Genital examination</label>
+						<!--input type="number" class="form-control" [(ngModel)]="form.genitalExam" name="" id=""-->
+						<select class="form-control" id="genitalExamination" required>
+							<option value="1">Normal</option>
+							<option value="2">Abnormal</option>
+						</select>
+					</div>
+			  
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">9. Breast examination <br />(for females)</label>
+				   
+						<input type="text" class="form-control" formControlName="breastExamination" name="" id=""  />
+						<!-- <div *ngIf="formFieldsData.get('breastExamination').invalid && (formFieldsData.get('breastExamination').dirty || formFieldsData.get('breastExamination').touched)">
+							 <div *ngIf="formFieldsData.get('rightEye').errors.min || formFieldsData.get('rightEye').errors.max" style="color: red; font-size: smaller; background-color: whitesmoke;  ">*should be between 70%-100%</div> 
+							<div *ngIf="formFieldsData.get('breastExamination').errors.pattern" style="color: red; font-size: smaller; background-color: whitesmoke;  ">* invalid input</div>
+						</div> -->
+					</div>
+			   
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">10. Joint examination</label>
+			
+						<select class="form-control" id="jointExamination" >
+							<option value="1">Normal</option>
+							<option value="2">Abnormal</option>
+						</select>
+					</div>
+			   
+					<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+						<label class=" label-details">11. Oral examination</label>
+						<select class="form-control" id="oralExam" >
+							<option value="1">Normal</option>
+							<option value="2">Any white patch</option>
+							<option value="3">Abnormality</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingMandatory">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#MandatorySec" aria-expanded="true" aria-controls="physicalExam">Mandatory investigations</button>
+			</h2>
+			<div id="MandatorySec" class="accordion-collapse collapse" aria-labelledby="headingMandatory" data-bs-parent="#accordionExample"> 
+  
+			<form [formGroup]="checkedValue" (change)="onCheckboxChange($event)" class="row align-items-end form-group pt-1"> 
+				<div class="col-xs-12 col-sm-12 col-lg-12 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" formControlName="selectAll" type="checkbox" value="" (change)="selectAll($event)" id="flexCheckDefault">
+						<label class="form-check-label" for="flexCheckDefault">
+						Select All
+						</label>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center"> 
+						<input class="form-check-input" formControlName="hBChecks" type="checkbox" value="" [checked]="checks" id="checkHB">
+						<label for="checkHB" class="form-check-label label-details my-0 mx-1">1. Hb <br/>(in g/dl)</label>						
+					</div> 
+					<input type="number" class="form-control" formControlName="hB" name="" id="hbValue">
+				</div>
+		   
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" formControlName="tlcChecks" type="checkbox" value="" [checked]="checks" id="checkTLC">
+						<label for="checkTLC" class="form-check-label label-details my-0 mx-1">2. TLC<br/>(/cumm)</label>
+					</div>
+					<input type="number" class="form-control" formControlName="tlc" name=""  id="tlcValue">
+				</div>
+			
+				<div class="col-xs-12 col-sm-6 col-lg-8 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" formControlName="dlcChecks" type="checkbox" value="" [checked]="checks" id="checkDLC">
+						<label for="checkDLC" class="form-check-label label-details my-0 mx-1">3. DLC</label>
+					</div>
+					
+					<div class="row  align-items-end form-group pb-1">
+						<div class="col">
+							<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> Neutrophils <br/> (in &percnt;)</label>
+							<input type="number" class="form-control" formControlName="neutrophils" name=""  id="neutrophilsValue">
+						</div>
+						<div class="col">
+							<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> Lymphocytes <br/>(in &percnt;)</label>
+							<input type="number" class="form-control" formControlName="lymphocytes" name=""  id="lymphocytesValue">
+						</div>
+						<div class="col">
+							<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> Monocytes <br/>(in &percnt;)</label>
+							<input type="number" class="form-control" formControlName="monocytes" name=""  id="monocytesValue">
+						</div>
+						<div class="col">
+							<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> Eosinophils<br/> (in &percnt;)</label>
+					   
+							<input type="number" class="form-control" formControlName="eosinophils" name=""  id="eosiphilsValue">
+						</div>
+						<div class="col">
+							<label class=" label-details"><i class="fa-solid fa-circle-dot"></i> Basophils<br/> (in &percnt;)</label>
+							<input type="number" class="form-control" formControlName="basophils" name=""  id="basophilsValue">
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="packedCellVolumeChecks" value="" [checked]="checks" id="checkPackedCell">
+						<label for="checkPackedCell" class="form-check-label label-details my-0 mx-1">4. Packed Cell Volume <br />(in L/L)</label>
+					</div>
+					<input type="number" class="form-control" formControlName="packedCellVolume" name=""  id="packedCell">
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="meanCorpusVolumeChecks" value="" [checked]="checks" id="checkMean">
+						<label for="checkMean" class="form-check-label label-details my-0 mx-1">5. Mean Corpuscular Volume <br />(in fL)</label>
+					</div>
+					<input type="number" class="form-control" formControlName="meanCorpusVolume" name=""  id="McvValue">
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="meanCorpusHemoglobinChecks" value="" [checked]="checks" id="checkMeanHB">
+						<label for="checkMeanHB" class="form-check-label label-details my-0 mx-1">6. Mean Corpuscular Hemoglobin <br />(in pg)</label>
+					</div>
+					<input type="number" class="form-control" formControlName="meanCorpusHemoglobin" name=""  id="MchValue">
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="meanCorpusHemoglobinConcenChecks" value="" [checked]="checks" id="checkMeanConcerntration">
+						<label for="checkMeanConcerntration" class="form-check-label label-details my-0 mx-1">7. Mean Corpuscular Hemoglobin Concentration <br />(in g/L)</label>
+					</div>
+					<input type="number" class="form-control" formControlName="meanCorpusHemoglobinConcen" name=""  id="MchcValue">
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="pletletCountChecks" value="" [checked]="checks" id="checkPlatelet">
+						<label for="checkPlatelet" class="form-check-label label-details my-0 mx-1">8. Platelet count <br />(per m &#x33A5;)</label>
+					</div>
+					<input type="number" class="form-control" formControlName="pletletCount" name="" id="plateletValue" >
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="rdwCvChecks" value="" [checked]="checks" id="checkRDWCV">
+						<label for="checkRDWCV" class="form-check-label label-details my-0 mx-1">9. RDW-CV <br />(in &percnt; ) </label>
+					</div>
+					<label class=" label-details"></label>
+					<input type="number" class="form-control" formControlName="rdwCv" name="" id="rdwCvValue" >
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="rdwSdChecks" value="" [checked]="checks" id="checkPRDWSD">
+						<label for="checkPRDWSD" class="form-check-label label-details my-0 mx-1">10. RDW-SD <br />(in &percnt; )</label>
+					</div>
+					<input type="number" class="form-control" formControlName="rdwSd" name="" id="rdwSdValue" >
+				</div>
+   
+
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="rbcCountChecks" value="" [checked]="checks" id="checkRBCCount">
+						<label for="checkRBCCount" class="form-check-label label-details my-0 mx-1">11. RBC count <br />(in ul)</label>
+					</div>
+					<input type="number" class="form-control" formControlName="rbcCount" name="" id="rbcCountValue" >
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="rbsChecks" value="" [checked]="checks" id="checkRBS">
+						<label for="checkRBS" class="form-check-label label-details my-0 mx-1">12. RBS <br />(in mg/ dL)</label>
+					</div>
+					<input type="number" class="form-control" formControlName="rbs" name="" id="rbsValue">
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="serumCholestrolChecks" value="" [checked]="checks" id="checkSerum">
+						<label for="checkSerum" class="form-check-label label-details my-0 mx-1">13. Serum cholesterol <br />(in mg/ dL)</label>
+					</div>
+					<input type="number" class="form-control" formControlName="serumCholestrol" name="" id="serumCholestrolValue" >
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="bloodUreaChecks" value="" [checked]="checks" id="checkBloodUrea">
+						<label for="checkBloodUrea" class="form-check-label label-details my-0 mx-1">14. Blood urea <br />(in mg/ dL)</label>
+					</div>
+					<input type="number" class="form-control" formControlName="bloodUrea"   name="" id="bloodUreaValue">
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="serumCreatinineChecks" value="" [checked]="checks" id="checkSerumcreatinine">
+						<label for="checkSerumcreatinine" class="form-check-label label-details my-0 mx-1">15. Serum creatinine <br />(in mg/ dL)</label>
+					</div>
+					<input type="number" class="form-control" formControlName="serumCreatinine" name=""  id="serumCreatinineValue">
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="tshChecks" value="" [checked]="checks" id="checkTSH">
+						<label for="checkTSH" class="form-check-label label-details my-0 mx-1">16. TSH <br />(in mU/L)</label>
+					</div> 
+					<input type="number" class="form-control" formControlName="tsh" name="" id="tshValue" > 
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="psaChecks" value="" [checked]="checks" id="checkPSA">
+						<label for="checkPSA" class="form-check-label label-details my-0 mx-1">17. PSA for males <br />(in ng/mL)</label>
+					</div>
+					<input type="number" class="form-control" formControlName="psa" name="" id="psaValue" >
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="urineRoutineExaminationChecks" value="" [checked]="checks" id="checkUrine">
+						<label for="checkUrine" class="form-check-label label-details my-0 mx-1">18. Urine routine examination</label>
+					</div>
+						
+					<input type="text" class="form-control" formControlName="urineRoutineExamination" name="" id="ureValue" >
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" value="" formControlName="papSmearChecks" [checked]="checks" id="checkVIA">
+						<label for="checkVIA" class="form-check-label label-details my-0 mx-1">19. VIA/PAP smear <br />(for females)</label>
+					</div>
+					<select class="form-control" id="papSmear" >
+						<option value="1">Normal</option>
+						<option value="2">Abnormal</option>
+					</select>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-lg-2 mb-2">
+					<div class="form-check d-flex align-items-center">
+						<input class="form-check-input" type="checkbox" formControlName="relevantInvestigationChecks" value="" [checked]="checks" id="checkRelevent">
+						<label for="checkRelevent" class="form-check-label label-details my-0 mx-1">20. Relevant investigation if advised by specialist</label>
+					</div>
+					<input type="text" class="form-control" formControlName="relevantInvestigation" name="" id="riiabsValue">
+				</div>
+			</form>
+		</div>
+
+        </div>
+		<div class="pagebreak"></div>
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingDiagnosis">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#diagnosisSec" aria-expanded="true" aria-controls="physicalExam">Diagnosis</button>
+			</h2>
+			<div id="diagnosisSec" class="accordion-collapse collapse" aria-labelledby="headingDiagnosis" data-bs-parent="#accordionExample"> 
+				<div class="row  align-items-center form-group pt-3 pb-3">
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<label style="font-weight: bold;">Diagnosis :-
+							 <!-- <span class="required-field" style="color: red;">*</span> -->
+							</label>
+			
+						<ng-multiselect-dropdown [placeholder]="'Select an option'" [data]="dropdownList"  [settings]="dropdownSettings"
+							(onSelect)="onItemSelect($event)" 
+							(onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"  [ngClass]='setClass()'
+							name='countrySelect ' >
+						</ng-multiselect-dropdown>
+  
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<div class="form-check d-flex align-items-center">
+							<input class="form-check-input" type="checkbox" value="" (change)="selected($event)" id="alreadyKnown">
+							<label class="form-check-label" for="alreadyKnown">Already Known</label>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-lg-12 mt-2" id="box" *ngIf="selectedDiseases.includes('Others')"  >
+						<textarea id="prescription" class="form-control" formControlName="otherDisease"  placeholder="Write for diagnosis"></textarea>						
+					</div>
+				</div>
+				<div class="row  align-items-center form-group pt-3 pb-3">
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<label style="font-weight: bold;">National Health Programs :-
+							 <!-- <span class="required-field" style="color: red;"> *</span> -->
+						 </label>
+						<select id="natHProgSelectedValue" (change)="getNatHelProg($event)">
+							<option *ngFor="let n of NationalHealthProgramsList" [value]="n.nationalHealthProgramNames">{{n.nationalHealthProgramNames}}</option>
+						  </select>
+						  
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<label style="font-weight: bold;">Reason For Refer :- 
+							<!-- <span class="required-field" style="color: red;"> *</span> -->
+						 </label>
+						<select id="reasonForReferValue">
+							<option value="">{{this.natHealthProgSelectedValue}}</option>
+							<!-- <option value="">To a higher centre: </option> -->
+							<optgroup label="To a higher centre:"> 
+								<option value="">
+									For detailed evaluation
+								</option>
+								<option value="">For treatment</option>
+							</optgroup>
+							<option value="">Specialist consultation</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingPrescription">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#prescriptionSec" aria-expanded="true" aria-controls="physicalExam">Prescription (if any)</button>
+			</h2>
+			<div id="prescriptionSec" class="accordion-collapse collapse" aria-labelledby="headingPrescription" data-bs-parent="#accordionExample"> 
+				<div class="row  align-items-center form-group pt-3 pb-3">
+					<div class="col-xs-12 col-sm-12 col-lg-12">
+						<textarea id="prescription" formControlName="prescription" class="form-control"></textarea>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+
+    
+    <div class="row mt-3 ">
+        <p id="signature" >Doctor's Signature: _______________</p>
+    </div>
+
+    
+    <div class="card bg-dark row rounded-0 footer-button-area">
+        <div class="card-body col-xs-12 pt-3 pb-3 text-end">
+           
+            <button class="btn btn-primary float-start form-submit-print " [disabled]="!printButton" onclick="window.print()"><i class="fa-solid fa-print"></i> Print</button>
+            <button class="btn btn-danger  form-submit-button mx-2" (click)="onCancel()"><i class="fa fa-arrow-left"></i> Back</button>
+            <button class="btn btn-success form-submit-button" [disabled]="formFieldsData.invalid" (click)="onSave()" ><i class="fa-solid fa-floppy-disk"></i> Save</button>
+        </div>
+    </div>
+    
+
+</div>
+

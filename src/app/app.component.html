@@ -1,0 +1,56 @@
+<div class="medical-form" #headerTemplate>
+  <form  *ngIf="isLoggedIn()" >
+    <div class="shadow bg-light container-fluid pt-2 pb-2">
+      <div class="row align-items-center justify-content-between" id="header">
+ 
+          <div class="col-xs-12 col-sm-6 col-lg-6">
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="d-flex align-items-center logo-area">
+              
+                <img  src="./assets\img\nirogi-haryana.png" alt="Haryana Government Logo">
+                <h4 class="header-title my-0 mx-2">NIROGI Haryana <span><i >{{title}}</i></span></h4>
+              </div> 
+            </div>
+        </div>
+       
+        
+          <div class="col-xs-12 col-sm-6 col-lg-6">
+            <div class="d-flex align-items-center justify-content-end">
+              <img src="./assets\img\HaryanaCM.png" alt="Haryana CM Logo">
+              <h4 class="header-title my-0 mx-2">Shri Manohar Lal <span>(Chief Minister)</span></h4>
+            </div>
+          </div>  
+          <button  class="btn btn-primary notificationBtn" (click)="openModal()"><i class="fa-solid fa-bell"></i> Notifications 
+            <!-- <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info  ">{{PendingReportsCount}}</span> -->
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info"
+                  *ngIf="PendingReportsCount <= 99; else display99Plus">
+                  {{ PendingReportsCount }}
+            </span>
+
+            <ng-template #display99Plus>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
+                99+
+              </span>
+            </ng-template>
+
+          </button>
+          <button  class="btn btn-danger logoutbtn" (click)="logOut()" ><i class="fa-solid fa-power-off"></i> Logout</button>
+        
+      </div>
+    </div>
+    
+  </form>
+  <router-outlet (activate)="setHeader()"></router-outlet>
+
+  <footer>
+    <div class="container-fluid pt-3" #footer>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+          <p>Powered by <strong>SeMT, CRID, Haryana</strong>. © 2021 All Rights are reserved.</p>
+          
+        </div>
+          
+      </div>
+    </div>
+  </footer>
+</div>

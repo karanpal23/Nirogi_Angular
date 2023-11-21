@@ -1,0 +1,331 @@
+<div class="container" id="first-body">
+	<div class="bg-light row shadow-sm">
+		<div class="col-xs-12 col-sm-12 col-lg-12 pt-2 pb-2">
+			<div class="row align-items-center mb-2">
+                    <h6 class="col-xs-12 col-sm-9 mt-3 mb-0"><i class="fa-solid fa-user"></i> <span> Dr. {{DoctorName}} </span></h6>
+                <div  class="col-xs-12 col-sm-3 float-end ">
+                    <button (click)="reportTable()"  class="float-end btn btn-success">Download Report</button>
+                </div>
+			</div>
+			<div class="row align-items-end">
+				<h5 class="col-xs-12 col-sm-9 mt-3 mb-0">Search Patient </h5>
+				<div  class="col-xs-12 col-sm-3 float-end ">
+                    <button (click)=toggleDisplayDivIf()  class=" float-end btn btn-success">More Filter</button>  
+                    
+                </div>
+			</div>
+			<div class="row align-items-end">
+				<div class="col-xs-12 col-sm-6 col-md-2">
+					<label>District :-</label>
+					<select  id="District"  class=" form-control py-2"  >
+                        <optgroup><option  value="0">{{loginUserDist}}</option></optgroup>
+						
+						<option [value]="dn.distName" *ngFor="let dn of districtNameList" > {{dn.distName}} </option>
+					</select>
+				</div> 
+				<div class="col-xs-12 col-sm-6 col-md-4 ">
+					<div class=" d-flex">
+						<input type="text" name="PPP ID" class="form-control rounded-0 rounded-start" placeholder="Enter PPP ID"  #PppInput id="pppId" >
+						<div class="col-xs-12 col-sm-4 col-lg-3">
+							<input  type="button" value="Search" class="btn btn-info rounded-0 rounded-end" (click)="getMemberByPpp(PppInput.value)" />
+                            
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-2 text-secondary pb-2 text-center">---- OR ----</div>
+				<div class="col-xs-12 col-sm-6 col-md-4 ">
+					<div class=" d-flex">
+						<input matInput #in placeholder="Enter Reference Id" class="form-control rounded-0 rounded-start">
+						<div class="col-xs-12 col-sm-4 col-lg-3">
+							<button type="submit" class="btn btn-info rounded-0 rounded-end"  (click)="refId(in.value)">Search</button>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+	</div>
+	
+	<div class="bg-light row shadow-sm border-top-1"  *ngIf="isShowDivIf">
+        
+        <div *ngIf="mobField==false"><span style="font-size: smaller; color: red;">*Please fill all three fields below </span></div>
+		
+		<div class="col-xs-12 col-sm-5 col-lg-3 mb-2" >
+			<label>Mobile Number</label>
+			<input type="text" [(ngModel)]="memberSearch.mobileNo" class="form-control py-2"   placeholder="9876543210" />
+		</div> 
+		<div class="col-xs-12 col-sm-5 col-lg-3 mb-2">
+			<label>First Name  </label>
+			<input type="text" [(ngModel)]="memberSearch.firstname" class="form-control py-2"    placeholder="First Name" />
+		</div>
+		<div class="col-xs-12 col-sm-4 col-lg-3 pb-2">
+			<br /><input  type="button" value="Go" class="btn btn-info" #mob (click)="getMemberByMob()" />
+		</div>
+	</div>
+    
+    <div class="row mt-4" *ngIf="tableDisplay==true">
+        <h5 class="col p-0">Patient List</h5>
+        
+
+        <div class="p-0 mt-1 table-responsive search-page-tab">
+        
+            <table class="table family-table shadow"> 
+                <thead>
+                    <tr class="bg-dark text-white ">
+                    <th class="pt-2 pb-2">
+                        PPP Id 
+                    </th>
+                    <th class="pt-2 pb-2">
+                        Name
+                    </th>
+                    <th class="pt-2 pb-2">
+                        Father/Husband Name
+                    </th>
+                    <th class="pt-2 pb-2">
+                        Age
+                    </th>
+                    <th class="pt-2 pb-2">
+                        Gender
+                    </th>
+                    <th class="pt-2 pb-2">
+                        Mobile 
+                    </th>
+                    <th class="pt-2 pb-2">
+                        Address
+                    </th>
+                    <th class="pt-2 pb-2">
+                        District 
+                    </th>
+                    <th class="pt-2 pb-2">
+                        Income
+                    </th>
+
+                    <th class="pt-2 pb-2" >Action</th>
+                    
+                </tr>
+                </thead>
+                <tbody>
+                   
+                    <!-- <ng-container *ngFor="let row of objSerch">
+                        <tr >
+                            <td class="first-col und">{{ row.pppId }}</td>
+                            <td class="first-col">{{ row.firstname }} {{ row.lastname }}</td>
+                            <td>{{ row.fatherHusbandFirstname }} {{ row.fatherHusbandLastname }}</td>
+                            <td>{{ row.dateOfBirth ? (row.dateOfBirth | calculateAge) : row.age }}</td>
+                            <td>{{ row.gender }}</td>
+                            <td>{{ row.mobileNo }}</td>
+                            <td>{{ row.address }}, {{ row.blockTownCity }}, {{ row.wardVillage }}</td>
+                            <td>{{ row.district }}</td>
+                            <td>{{ row.income }}</td>
+                            <td>
+                                <button (click)="row.flagCheck === null || row.flagCheck === '' ? onNext(row, row.memberId) : onView(row, row.memberId)"
+                                [class.btn-success]="row.flagCheck === null || row.flagCheck === ''"
+                                [class.bg-success]="row.flagCheck === null || row.flagCheck === ''"
+                                [class.bg-dark]="row.flagCheck === 'yes' || row.flagCheck === 'Yes'"
+                                [style.color]="row.flagCheck === 'yes' || row.flagCheck === 'Yes' ? 'white' : ''"
+                                >
+                                {{ row.flagCheck === null || row.flagCheck === '' ? 'Next' : 'View' }}
+                                </button>
+                            </td>
+                        </tr>
+                    </ng-container> -->
+
+
+                    <ng-container *ngFor="let row of objSerch; let i = index">
+                        <tr >
+                            <td class="first-col und">{{ row.pppId }}</td>
+                            <td class="first-col">{{ row.firstname }} {{ row.lastname }}</td>
+
+                            <td>
+                                {{ row.fatherHusbandFirstname && row.fatherHusbandLastname ? row.fatherHusbandFirstname + ' ' + row.fatherHusbandLastname : row.headOfFamily }}
+                            </td>
+                              
+                              
+                            <td>{{ row.dateOfBirth ? (row.dateOfBirth | calculateAge) : row.age }}</td>
+                            <td>{{ row.gender }}</td>
+                            <td>{{ row.mobileNo }}</td>
+                            
+                            <td>
+                                {{ row.address ? row.address : (i > 0 ? objSerch[i - 1].address : '') }},
+                                {{ row.blockTownCity ? row.blockTownCity : (i > 0 ? objSerch[i - 1].blockTownCity : '') }},
+                                {{ row.wardVillage ? row.wardVillage : (i > 0 ? objSerch[i - 1].wardVillage : '') }}
+                              </td>
+                            <td>
+                                {{ row.district ? row.district : (i > 0 ? objSerch[i - 1].district : '') }}
+                            </td>
+                            <td>
+                                {{ row.income ? row.income : (i > 0 ? objSerch[i - 1].income : '') }}
+                            </td>
+                            
+                            <td>
+                                <button (click)="row.flagCheck === null || row.flagCheck === '' ? onNext(row, row.memberId) : onView(row, row.memberId)"
+                                [class.btn-success]="row.flagCheck === null || row.flagCheck === ''"
+                                [class.bg-success]="row.flagCheck === null || row.flagCheck === ''"
+                                [class.bg-dark]="row.flagCheck === 'yes' || row.flagCheck === 'Yes'"
+                                [style.color]="row.flagCheck === 'yes' || row.flagCheck === 'Yes' ? 'white' : ''"
+                                >
+                                {{ row.flagCheck === null || row.flagCheck === '' ? 'Next' : 'View' }}
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="i === objSerch.length - 1">  
+                            <td *ngIf="showInputRow" >
+                                <p  id="headOfFamily"> {{row.pppId}}</p>
+                            </td>
+                            <td *ngIf="showInputRow">
+                                
+                                <input type="text"  id=""  placeholder="firstame" [(ngModel)]="newMemberAddRecord.firstname" class=" form-control py-2 pt-0 mb-1 ">
+                                <input type="text"  id="" placeholder="lastname" [(ngModel)]="newMemberAddRecord.lastname" class=" form-control py-2 pt-0  ">
+                            </td>
+                            <td *ngIf="showInputRow"  id="headOfFamily">
+                                <!-- {{row.fatherHusbandFirstname+ row.fatherHusbandLastname}} -->
+                                
+                               {{ row.fatherHusbandFirstname && row.fatherHusbandLastname ? row.fatherHusbandFirstname + ' ' + row.fatherHusbandLastname : row.headOfFamily }}
+                            </td>
+                            <td *ngIf="showInputRow"><input  type="date" [(ngModel)]="newMemberAddRecord.dateOfBirth" class="form-control"  id="age" /></td>
+                            <td *ngIf="showInputRow"><input type="text" [(ngModel)]="newMemberAddRecord.gender"  id="" placeholder="Gender" class=" form-control py-2 pt-0"></td>
+                            <td *ngIf="showInputRow"><input type="text" [(ngModel)]="newMemberAddRecord.mobileNo"  id="" placeholder="Mobile" class=" form-control py-2 pt-0"></td>
+                            <td *ngIf="showInputRow">{{row.address}}</td>
+                            <td *ngIf="showInputRow">{{row.district}}</td>
+                            <td *ngIf="showInputRow">{{row.income}}</td>
+                            <td  *ngIf="showInputRow">
+                                <label for="selectOption" class="pt-0 pb-0">Relationship with Head of Family:</label>
+                                <select id="selectOptionRelWithHod" >
+                                    <option value="">Son</option>
+                                    <option value="">Daughter</option>
+                                    <option value="">Grandson</option>
+                                    <option value="">Granddaughter</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr *ngIf="i === objSerch.length - 1">
+                            
+                            <td   colspan="10">
+                                <p  (click)="onAddNewMember()" *ngIf="showInputRowbutton" class="btn btn-primary">
+                                <span style="font-weight: bold;" >+</span> Add new member
+                                </p>
+                                <div class="float-end"> 
+                                    <button *ngIf="showInputRowBackbutton" class="btn btn-danger m-1" (click)="onInputRowBackbutton()"><i class="fa-solid fa-arrow-left-long"></i> Back</button>
+                                    <button *ngIf="showInputRow" class="btn btn-success  m-1" (click)="onAddButtonClick(row)" ><i class="fa-solid fa-user-plus"></i> Add</button>
+                                   </div>
+                            </td>
+                            
+                        </tr>
+                    </ng-container>
+                    
+                        
+                    
+                </tbody>
+            </table>
+            <div class="row" *ngIf="spinner==true">
+                <div id="loader">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="loading"></div>
+                </div>
+            </div>
+        </div>
+    
+    
+    
+
+    </div>
+
+    <div class="row mt-4" *ngIf="refTableDisplay==true">
+        <h5 class="col p-0">Patient List</h5>
+        
+
+        <div class="p-0 mt-1 table-responsive search-page-tab">
+        
+            <table class="table family-table shadow">
+                <!--reference id table-->
+            <thead>
+                <tr class="bg-dark text-white ">
+                <th class="pt-2 pb-2">
+                    Reference Id 
+                </th>
+                
+                
+                <th class="pt-2 pb-2">
+                    District 
+                </th>
+                <th class="pt-2 pb-2">
+                    Facility
+                </th>
+
+                <th class="pt-2 pb-2" >Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr  *ngFor="let row of referenceObj"  >
+                <td class="first-col"> {{row.referenceId }} </td>
+                <td> {{row.district}} </td>
+                <td> {{row.facility}} </td>
+                <td>
+                    <button (click)="onNextRef(row)" class="btn btn-success bg-success">Next</button>
+                </td>
+                
+            </tr>
+        </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="bg-light row shadow-sm border-top-1 mt-4" *ngIf="reportsTableDisplay==true">
+        <div class="col-xs-12 col-sm-12 col-lg-12 pt-2 pb-2">
+            <h5 class="col p-0 bg-dark text-white ">Patient Report</h5>
+            <div class="p-0 mt-1 table-responsive search-page-tab">
+                <div class="row  align-items-center form-group " >
+                    <div class="row  align-items-center form-group " >
+                        <div class="col-xs-12 col-sm-6 col-md-2 ">
+                            <label for="">Date:- </label>
+                            <input  type="date" class="form-control" [(ngModel)]="this.Dates.from" id="fromDate" />
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-2" >
+                            <label for="">Select District:- </label>
+                            <select  id="DistrictName"  class=" form-control py-2"  class="form-control"  >
+                                <option value="0">-- Select --</option>
+                                <option *ngFor="let dn of districtNameList" value={{dn.distId}} >  {{dn.distName}} </option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-xs-12 col-sm-4 col-lg-3 pt-3">
+                            <button class="btn btn-success bg-success pt-2" (click)="downloadFile()" >Generate Report</button>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="text-center mt-5 pb-3" *ngIf="logoDisplay==true">
+        <img src="./assets\img\nirogi-haryana.png" class="opacity-50" />
+        <h1 class="text-secondary mt-0">Search to find the records!</h1>
+    </div>
+    <div class="row" *ngIf="spinner==true">
+        <div id="loader">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="loading"></div>
+        </div>
+    </div>
+
+
+  
+</div>  
+
+
