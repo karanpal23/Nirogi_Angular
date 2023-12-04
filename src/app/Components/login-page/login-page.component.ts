@@ -8,6 +8,7 @@ import { LoginResponse } from 'src/app/classes/credentials';
 import { MatDialog } from '@angular/material/dialog';
 import * as CryptoJS from 'crypto-js';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-login-page',
@@ -51,7 +52,7 @@ export class LoginPageComponent implements OnInit {
   get token():any{
     return sessionStorage.getItem("role");
   }
-  constructor(private loginService:LoginService, private router: Router,private formBuilder:FormBuilder,public dialog: MatDialog) { 
+  constructor(private loginService:LoginService, private router: Router,public dialog: MatDialog,public appComponent:AppComponent) { 
     
     
   }
@@ -113,7 +114,9 @@ export class LoginPageComponent implements OnInit {
                 }
                 else{
                   
-                  this.router.navigate(['/home'])
+                  this.router.navigate(['/home']);
+                  this.appComponent.openModal();
+
                 }
                 }
                 else{

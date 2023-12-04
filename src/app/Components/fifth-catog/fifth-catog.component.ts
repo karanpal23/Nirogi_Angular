@@ -771,6 +771,11 @@ onSave(){
   var opt = e.options[e.selectedIndex];
   var reasonForReferSelectedVal = (<HTMLSelectElement><unknown>opt).innerText;
 
+
+  //diagnosis value 
+  var rawDiagnosedValueById = (document.getElementById("diagnosisValueById")).innerHTML;
+  var DiagnosedValueById = rawDiagnosedValueById.replace(/x\n/g, ',');
+
 var info=new AllCategoryForm();
 info.patientId=this.detailsData.memberId;
 info.userId=sessionStorage.getItem('username').trim();
@@ -838,15 +843,52 @@ info.tsh=this.checkedValue.value.tsh;
 info.psaForMales=this.checkedValue.value.psa;
 info.papSmear=PapSmear;
 
-
+// console.log("  ==  "+String(DiagnosedValueById))
 //diagnosis
+let otherDiseases=(this.formFieldsData.get("otherDisease").value);
+let diagnosisValue=String(this.FinalSelectValue)+"- "+(this.formFieldsData.get("otherDisease").value);
 
-let diagnosisValue=String(this.selectedDiseases)+"- "+(this.formFieldsData.get("otherDisease").value);
 if(diagnosisValue=="-" || diagnosisValue==" - " || diagnosisValue=="- "){
-  info.diagnosed="none"
+  // if(otherDiseases==" " || otherDiseases==null ){
+  //   info.diagnosed=String(DiagnosedValueById);
+  // }else{
+  //   info.diagnosed=DiagnosedValueById+" - "+otherDiseases;
+  // }
+  if (otherDiseases == " " || otherDiseases == null) {
+    // Remove "Others" from DiagnosedValueById if it exists
+    const filteredDiagnosedValues = JSON.parse(DiagnosedValueById).filter((value: string) => value !== "Others-");
+    console.log("if ==== "+filteredDiagnosedValues)
+    info.diagnosed = String(filteredDiagnosedValues);
+  } else {
+    info.diagnosed = DiagnosedValueById + " - " + otherDiseases;
+  }
+  
+
+ // info.diagnosed=DiagnosedValueById
 }else{
-  info.diagnosed=diagnosisValue;
+ // info.diagnosed=diagnosisValue;
+
+ if (otherDiseases == " " || otherDiseases == null) {
+  // Remove "Others" from DiagnosedValueById if it exists
+  const filteredDiagnosedValues = JSON.parse(diagnosisValue).filter((value: string) => value !== "Others-");
+  console.log("if ==== "+filteredDiagnosedValues)
+  info.diagnosed = String(filteredDiagnosedValues);
+} else {
+  info.diagnosed = diagnosisValue + " - " + otherDiseases;
 }
+}
+
+
+
+console.log(" --   "+ this.selectedDiseases)
+
+// if(otherDiseases==" " || otherDiseases==null ){
+//   info.diagnosed=String(this.selectedDiseases);
+// }else{
+//   info.diagnosed=String(this.selectedDiseases)+" - "+otherDiseases;
+// }
+
+
 if(this.alreadyKnownChecks==true){
   info.alreadyKnown="Yes";
 }
@@ -928,37 +970,37 @@ info.prescription=(this.formFieldsData.get("prescription").value);
 
 console.log(info);
 this.referenceDivShow=true;
-this.formD.addFormAllCategory(info).subscribe({next:data=>{
-  this.obj=data;
-  this.getrefId=data;
-  console.log("------------------------------------",this.getrefId.refernceId);
-  console.log(this.obj);
-  this.submitSuccessfullmsg = "*Patient Information Added Successfully!!";
-  window.scrollTo(0,0);
-  window.alert(this.submitSuccessfullmsg+" "+" The Reference Id is :- "+data.refernceId);
-  this.printButton=true;
-  // Generate PDF
+// this.formD.addFormAllCategory(info).subscribe({next:data=>{
+//   this.obj=data;
+//   this.getrefId=data;
+//   console.log("------------------------------------",this.getrefId.refernceId);
+//   console.log(this.obj);
+//   this.submitSuccessfullmsg = "*Patient Information Added Successfully!!";
+//   window.scrollTo(0,0);
+//   window.alert(this.submitSuccessfullmsg+" "+" The Reference Id is :- "+data.refernceId);
+//   this.printButton=true;
+//   // Generate PDF
  
   
   
-},
-// error: (err: HttpErrorResponse) => {
-//  alert(err.status+" "+"Something went wrong");
+// },
+// // error: (err: HttpErrorResponse) => {
+// //  alert(err.status+" "+"Something went wrong");
  
+// // }
+// error: err => {
+//   // Error response
+//   if (err.error.includes("Duplicate entry")) {
+//     console.log("Duplicate entry error:", err.error);
+//     alert("Duplicate entry error:  "+ err.error);
+//     // Display the duplicate entry error message to the user or update UI accordingly
+//   } else {
+//     console.log("Error:", err.status, err.statusText, err.error);
+//     alert(" error:  "+ err.status+" "+ err.statusText+" "+ err.error);
+//     // Display the error message to the user or update UI accordingly
+//   }
 // }
-error: err => {
-  // Error response
-  if (err.error.includes("Duplicate entry")) {
-    console.log("Duplicate entry error:", err.error);
-    alert("Duplicate entry error:  "+ err.error);
-    // Display the duplicate entry error message to the user or update UI accordingly
-  } else {
-    console.log("Error:", err.status, err.statusText, err.error);
-    alert(" error:  "+ err.status+" "+ err.statusText+" "+ err.error);
-    // Display the error message to the user or update UI accordingly
-  }
-}
-});
+// });
 
 
 
@@ -1011,20 +1053,30 @@ onItemSelect(item: any) {
   //Do something if required
    // Add the diseaseList value to the selectedDiseases array
   this.selectedDiseases.push(item.diseaseList);
+  this.FinalSelectValue=this.selectedDiseases;
   this.setClass();
 }
 onItemDeSelect(item: any) {
+  let array=JSON.parse(this.FinalSelectValue)
   // Find the index of the diseaseList value in the selectedDiseases array
-  const index = this.selectedDiseases.indexOf(item.diseaseList);
+  const index = array.indexOf(item.diseaseList);
   
   // If the value is found, remove it from the selectedDiseases array
   if (index !== -1) {
-    this.selectedDiseases.splice(index, 1);
+    array.splice(index, 1);
+    this.FinalSelectValue=array;
   }
 }
+
+FinalSelectValue:any;
 onSelectAll(items: any) {
-  
+  console.log("101--- "+JSON.stringify(items))
   //Do something if required
+  const diseaseListValues = items.map((item: any) => item.diseaseList);
+
+    // Convert the array to a JSON string if needed
+  this.FinalSelectValue = JSON.stringify(diseaseListValues);
+  console.log("103---- "+this.FinalSelectValue);
   this.setClass();
 }
 

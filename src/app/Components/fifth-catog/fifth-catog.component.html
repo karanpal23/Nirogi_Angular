@@ -464,7 +464,7 @@
 						<ng-multiselect-dropdown [placeholder]="'Select an option'" [data]="dropdownList" [settings]="dropdownSettings"
 							(onSelect)="onItemSelect($event)" 
 							(onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"  [ngClass]='setClass()'
-							name='countrySelect ' >
+							name='countrySelect ' id="diagnosisValueById" >
 						</ng-multiselect-dropdown>
 						
   
@@ -532,13 +532,15 @@
     </div>
 
     <!-- Category Card Ends -->
-    
+    <!-- [disabled]="formFieldsData.invalid"  -->
     
     <div class="card bg-dark row rounded-0 footer-button-area">
         <div class="card-body col-xs-12 pt-3 pb-3 text-end">
             <button class="btn btn-primary float-start form-submit-print " [disabled]="!printButton" onclick="window.print()"><i class="fa-solid fa-print"></i> Print</button>
             <button class="btn btn-danger  form-submit-button mx-2" (click)="onCancel()"><i class="fa fa-arrow-left"></i> Back</button>
-            <button class="btn btn-success form-submit-button"  [disabled]="formFieldsData.invalid" (click)="onSave()" ><i class="fa-solid fa-floppy-disk"></i> Save</button>
+            <button class="btn btn-success form-submit-button"
+			  
+			  (click)="onSave()" ><i class="fa-solid fa-floppy-disk"></i> Save</button>
         </div>
     </div>
     

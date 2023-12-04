@@ -422,12 +422,21 @@ onSave(){
   //diagnosis
 
   
-  let diagnosisValue=String(this.selectedDiseases)+"- "+(this.formFieldsData.get("otherDisease").value);
-  if(diagnosisValue=="-" || diagnosisValue==" - " || diagnosisValue=="- "){
-    info.diagnosed="none"
-  }else{
-    info.diagnosed=diagnosisValue;
-  }
+  // let diagnosisValue=String(this.selectedDiseases)+"- "+(this.formFieldsData.get("otherDisease").value);
+  // if(diagnosisValue=="-" || diagnosisValue==" - " || diagnosisValue=="- "){
+  //   info.diagnosed="none"
+  // }else{
+  //   info.diagnosed=diagnosisValue;
+  // }
+
+  let otherDiseases=(this.formFieldsData.get("otherDisease").value);
+
+if(otherDiseases==" " || otherDiseases==null ){
+  info.diagnosed=String(this.selectedDiseases);
+}else{
+  info.diagnosed=String(this.selectedDiseases)+" - "+otherDiseases;
+}
+
   if(this.alreadyKnownChecks==true){
     info.alreadyKnown="Yes";
   }
